@@ -1,7 +1,5 @@
 FROM openjdk:12-alpine
 USER root
-
-
 RUN apk add git
 RUN mkdir -p test
 COPY ./TEST-0.0.1-SNAPSHOT.jar /test/TEST-0.0.1-SNAPSHOT.jar
