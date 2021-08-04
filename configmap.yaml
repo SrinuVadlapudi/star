@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: config
+data:
+    mydata: |-
+      Hello Developer..!!!
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javaapp
+  labels:
+    app: javaapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javaapp
+  template:
+    metadata:
+      labels:
+        app: javaapp
+    spec:
+      initContainers:
+      - name: init-myapp
+        image: gcr.io/srinu1/busybox:latest
+        command: ['sh', '-c', 'cp /var/config-volume/* /opt/shared-volume/']
+        volumeMounts:
+          - mountPath: /var/config-volume
+        - name: config-volume
+          - mountPath: /opt/shared-volume
+            name: shared-volume
+      containers:
+      - name: hello-01
+        image: gcr.io/srinu1/ram:v1
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /opt/shared-volume
+            - name: hello-02
+        image: gcr.io/srinu1/first-app:latest
+        ports:
+        - containerPort: 8089
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /var/shared-volume
+          
+      volumes:
+      - name: shared-volume
+        emptyDir: {} 
+      - name: config-volume
+        configMap:
+          name: config
+
+
+
