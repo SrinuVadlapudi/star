@@ -1,10 +1,5 @@
 FROM openjdk:12-alpine
 USER root
-
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 0914f0a (commited)
 RUN apk add git
 RUN mkdir -p test
 COPY ./TEST-0.0.1-SNAPSHOT.jar /test/TEST-0.0.1-SNAPSHOT.jar
